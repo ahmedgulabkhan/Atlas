@@ -1,3 +1,4 @@
+import 'package:Atlas/helper/helper_functions.dart';
 import 'package:Atlas/models/User.dart';
 import 'package:Atlas/services/database_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -42,6 +43,17 @@ class AuthService {
 
   //sign out
   Future signOut() async {
-    return await _auth.signOut();
+    try {
+      await HelperFunctions.saveUserLoggedInSharedPreference(false);
+      await HelperFunctions.saveUserEmailSharedPreference('');
+      await HelperFunctions.saveUserNameSharedPreference('');
+
+      return await _auth.signOut().whenComplete(() async {
+      });
+    } catch(e) {
+      print(e.toString());
+      return null;
+    }
+  }
   }
 }
