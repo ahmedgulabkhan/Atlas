@@ -1,3 +1,5 @@
+import 'package:Atlas/pages/home_page.dart';
+import 'package:Atlas/services/auth_service.dart';
 import 'package:Atlas/shared/constants.dart';
 import 'package:Atlas/shared/loading.dart';
 import 'package:flutter/gestures.dart';
@@ -13,6 +15,8 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+
+  final AuthService _authService = new AuthService();
   
   TextEditingController _emailEditingController = new TextEditingController();
   TextEditingController _passwordEditingController = new TextEditingController();
@@ -20,6 +24,26 @@ class _SignInPageState extends State<SignInPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   String _error = '';
+
+  _onSignIn() async {
+    if (_formKey.currentState.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      await _authService.signInWithEmailAndPassword(_emailEditingController.text, _passwordEditingController.text).then((result) async {
+        if (result != null) {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+        }
+        else {
+          setState(() {
+            _error = 'Error signing in!';
+            _isLoading = false;
+          });
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +105,7 @@ class _SignInPageState extends State<SignInPage> {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
                       child: Text('Sign In', style: TextStyle(color: Colors.blue, fontSize: 16.0)),
                       onPressed: () {
-                        
+                        _onSignIn();
                       }
                     ),
                   ),

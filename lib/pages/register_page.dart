@@ -1,3 +1,5 @@
+import 'package:Atlas/pages/home_page.dart';
+import 'package:Atlas/services/auth_service.dart';
 import 'package:Atlas/shared/constants.dart';
 import 'package:Atlas/shared/loading.dart';
 import 'package:flutter/gestures.dart';
@@ -13,6 +15,9 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+
+  final AuthService _authService = new AuthService();
+
   TextEditingController _fullNameEditingController = new TextEditingController();
   TextEditingController _emailEditingController = new TextEditingController();
   TextEditingController _passwordEditingController = new TextEditingController();
@@ -21,6 +26,26 @@ class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   String _error = '';
+
+  _onRegister() async {
+    if (_formKey.currentState.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      await _authService.registerWithEmailAndPassword(_fullNameEditingController.text, _emailEditingController.text, _passwordEditingController.text).then((result) async {
+        if (result != null) {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+        }
+        else {
+          setState(() {
+            _error = 'Error while registering the user!';
+            _isLoading = false;
+          });
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +134,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
                       child: Text('Sign Up', style: TextStyle(color: Colors.blue, fontSize: 16.0)),
                       onPressed: () {
-                        
+                        _onRegister();
                       }
                     ),
                   ),
