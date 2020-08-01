@@ -1,3 +1,4 @@
+import 'package:Atlas/helper/helper_functions.dart';
 import 'package:Atlas/pages/home_page.dart';
 import 'package:Atlas/services/auth_service.dart';
 import 'package:Atlas/shared/constants.dart';
@@ -35,6 +36,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
       await _authService.registerWithEmailAndPassword(_fullNameEditingController.text, _emailEditingController.text, _passwordEditingController.text).then((result) async {
         if (result != null) {
+          await HelperFunctions.saveUserLoggedInSharedPreference(true);
+          await HelperFunctions.saveUserEmailSharedPreference(_emailEditingController.text);
+          await HelperFunctions.saveUserNameSharedPreference(_fullNameEditingController.text);
+          
           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
         }
         else {

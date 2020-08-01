@@ -1,7 +1,10 @@
+import 'package:Atlas/helper/helper_functions.dart';
 import 'package:Atlas/pages/home_page.dart';
 import 'package:Atlas/services/auth_service.dart';
+import 'package:Atlas/services/database_service.dart';
 import 'package:Atlas/shared/constants.dart';
 import 'package:Atlas/shared/loading.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -33,6 +36,13 @@ class _SignInPageState extends State<SignInPage> {
 
       await _authService.signInWithEmailAndPassword(_emailEditingController.text, _passwordEditingController.text).then((result) async {
         if (result != null) {
+          QuerySnapshot userInfoSnapshot = await DatabaseService().getUserData(_emailEditingController.text);
+
+          await HelperFunctions.saveUserLoggedInSharedPreference(true);
+          await HelperFunctions.saveUserEmailSharedPreference(_emailEditingController.text);
+          await HelperFunctions.saveUserNameSharedPreference(
+            userInfoSnapshot.documents[0].data['fullName']
+          );
           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
         }
         else {
