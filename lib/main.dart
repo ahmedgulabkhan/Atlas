@@ -16,6 +16,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   
   bool _isLoggedIn = false;
+  String userName = '';
+  String userEmail = '';
 
   @override
   void initState() {
@@ -29,6 +31,18 @@ class _MyAppState extends State<MyApp> {
         _isLoggedIn = value;
       });
     });
+
+    await HelperFunctions.getUserNameSharedPreference().then((value) {
+      setState(() {
+        userName = value;
+      });
+    });
+
+    await HelperFunctions.getUserEmailSharedPreference().then((value) {
+      setState(() {
+        userEmail = value;
+      });
+    });
   }
 
   @override
@@ -39,7 +53,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primaryColor: Colors.blue,
       ),
-      home: (_isLoggedIn != null) ? _isLoggedIn ? HomePage() : AuthenticatePage() : AuthenticatePage(),
+      home: (_isLoggedIn != null) ? _isLoggedIn ? HomePage(userName: userName, userEmail: userEmail) : AuthenticatePage() : AuthenticatePage(),
     );
   }
 }

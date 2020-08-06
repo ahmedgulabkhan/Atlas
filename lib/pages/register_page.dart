@@ -40,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
           await HelperFunctions.saveUserEmailSharedPreference(_emailEditingController.text);
           await HelperFunctions.saveUserNameSharedPreference(_fullNameEditingController.text);
           
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage(userName: _fullNameEditingController.text, userEmail: _emailEditingController.text)));
         }
         else {
           setState(() {
