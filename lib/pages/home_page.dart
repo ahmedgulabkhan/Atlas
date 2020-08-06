@@ -8,6 +8,13 @@ import 'package:flutter/material.dart';
 class HomePage extends StatelessWidget {
 
   final AuthService _authService = new AuthService();
+  final String userName;
+  final String userEmail;
+
+  HomePage({
+    this.userName,
+    this.userEmail
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +71,7 @@ class HomePage extends StatelessWidget {
           children: <Widget>[
             GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => BlogPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => BlogPage(userName: userName, userEmail: userEmail,)));
               },
               child: Icon(Icons.add_circle, color: Colors.grey[700], size: 100.0)
             ),
@@ -75,7 +82,7 @@ class HomePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => BlogPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => BlogPage(userName: userName, userEmail: userEmail)));
         },
         child: Icon(Icons.add, color: Colors.white, size: 30.0),
         backgroundColor: Colors.grey[700],

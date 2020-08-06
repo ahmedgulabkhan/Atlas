@@ -27,6 +27,7 @@ class _SignInPageState extends State<SignInPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   String _error = '';
+  String userName = '';
 
   _onSignIn() async {
     if (_formKey.currentState.validate()) {
@@ -37,13 +38,14 @@ class _SignInPageState extends State<SignInPage> {
       await _authService.signInWithEmailAndPassword(_emailEditingController.text, _passwordEditingController.text).then((result) async {
         if (result != null) {
           QuerySnapshot userInfoSnapshot = await DatabaseService().getUserData(_emailEditingController.text);
+          userName = userInfoSnapshot.documents[0].data['fullName'];
 
           await HelperFunctions.saveUserLoggedInSharedPreference(true);
           await HelperFunctions.saveUserEmailSharedPreference(_emailEditingController.text);
           await HelperFunctions.saveUserNameSharedPreference(
-            userInfoSnapshot.documents[0].data['fullName']
+            userName
           );
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage(userName: userName, userEmail: _emailEditingController.text,)));
         }
         else {
           setState(() {

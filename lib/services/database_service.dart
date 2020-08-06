@@ -28,10 +28,11 @@ class DatabaseService {
   }
 
   // save blog post
-  Future saveBlogPost(String title, String author, String content) async {
+  Future saveBlogPost(String title, String author, String authorEmail, String content) async {
     return await blogPostCollection.add({
       'blogPostTitle': title,
       'blogPostAuthor': author,
+      'blogPostAuthorEmail': authorEmail,
       'blogPostContent': content,
       'createdDate': new DateTime.now()
     });

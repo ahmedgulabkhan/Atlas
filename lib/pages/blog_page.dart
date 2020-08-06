@@ -1,20 +1,48 @@
+import 'package:Atlas/pages/success_page.dart';
+import 'package:Atlas/services/database_service.dart';
 import 'package:Atlas/shared/constants.dart';
+import 'package:Atlas/shared/loading.dart';
 import 'package:flutter/material.dart';
 
-class BlogPage extends StatelessWidget {
+class BlogPage extends StatefulWidget {
 
-  final TextEditingController _titleEditingController = new TextEditingController();
-  final TextEditingController _contentEditingController = new TextEditingController();
+  final String userName;
+  final String userEmail;
+
+  BlogPage({
+    this.userName,
+    this.userEmail
+  });
+
+  @override
+  _BlogPageState createState() => _BlogPageState();
+}
+
+class _BlogPageState extends State<BlogPage> {
+
+  TextEditingController _titleEditingController = new TextEditingController();
+  TextEditingController _contentEditingController = new TextEditingController();
+
+  final DatabaseService _databaseService = new DatabaseService();
 
   final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
 
   _onPublish() async {
-    
+    if (_formKey.currentState.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      await _databaseService.saveBlogPost(_titleEditingController.text, widget.userName, widget.userEmail, _contentEditingController.text).then((res) async {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SuccessPage()));
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return _isLoading ? Loading() : Scaffold(
       appBar: AppBar(
         title: Text("Create a Post"),
         elevation: 0.0,
