@@ -153,7 +153,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       children: <TextSpan>[
                         TextSpan(
                           text: 'Sign In',
-                          style: TextStyle(color: Colors.black87),
+                          style: TextStyle(color: Colors.black87, decoration: TextDecoration.underline),
                           recognizer: TapGestureRecognizer()..onTap = () {
                             widget.toggleView();
                           },

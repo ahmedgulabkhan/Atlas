@@ -131,6 +131,7 @@ class _SignInPageState extends State<SignInPage> {
                           text: 'Register here',
                           style: TextStyle(
                             color: Colors.black87,
+                            decoration: TextDecoration.underline
                           ),
                           recognizer: TapGestureRecognizer()..onTap = () {
                             widget.toggleView();

@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primaryColor: Colors.blue,
       ),
-      home: _isLoggedIn ? HomePage() : AuthenticatePage(),
+      home: (_isLoggedIn != null) ? _isLoggedIn ? HomePage() : AuthenticatePage() : AuthenticatePage(),
     );
   }
 }
