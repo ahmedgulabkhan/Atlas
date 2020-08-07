@@ -5,6 +5,7 @@ import 'package:Atlas/pages/blog_page.dart';
 import 'package:Atlas/pages/search_page.dart';
 import 'package:Atlas/services/auth_service.dart';
 import 'package:Atlas/services/database_service.dart';
+import 'package:Atlas/widgets/post_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -78,10 +79,15 @@ class _HomePageState extends State<HomePage> {
             return ListView.builder(
               itemCount: snapshot.data.documents.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(snapshot.data.documents[index].data['blogPostTitle']),
-                  subtitle: Text(snapshot.data.documents[index].data['blogPostContent']),
-                  trailing: Text(snapshot.data.documents[index].data['date']),
+                // return ListTile(
+                //   title: Text(snapshot.data.documents[index].data['blogPostTitle']),
+                //   subtitle: Text(snapshot.data.documents[index].data['blogPostContent']),
+                //   trailing: Text(snapshot.data.documents[index].data['date']),
+                // );
+                return PostTile(
+                  blogPostTitle: snapshot.data.documents[index].data['blogPostTitle'],
+                  blogPostContent: snapshot.data.documents[index].data['blogPostContent'],
+                  date: snapshot.data.documents[index].data['date']
                 );
               }
             );
