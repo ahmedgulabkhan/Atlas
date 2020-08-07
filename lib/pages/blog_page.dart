@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 
 class BlogPage extends StatefulWidget {
 
+  final String uid;
   final String userName;
   final String userEmail;
 
   BlogPage({
+    this.uid,
     this.userName,
     this.userEmail
   });
@@ -23,8 +25,6 @@ class _BlogPageState extends State<BlogPage> {
   TextEditingController _titleEditingController = new TextEditingController();
   TextEditingController _contentEditingController = new TextEditingController();
 
-  final DatabaseService _databaseService = new DatabaseService();
-
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
@@ -34,7 +34,7 @@ class _BlogPageState extends State<BlogPage> {
         _isLoading = true;
       });
 
-      await _databaseService.saveBlogPost(_titleEditingController.text, widget.userName, widget.userEmail, _contentEditingController.text).then((res) async {
+      await DatabaseService(uid: widget.uid).saveBlogPost(_titleEditingController.text, widget.userName, widget.userEmail, _contentEditingController.text).then((res) async {
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SuccessPage()));
       });
     }

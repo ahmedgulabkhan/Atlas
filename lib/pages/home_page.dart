@@ -1,20 +1,95 @@
+import 'package:Atlas/helper/helper_functions.dart';
 import 'package:Atlas/pages/about_page.dart';
 import 'package:Atlas/pages/authenticate_page.dart';
 import 'package:Atlas/pages/blog_page.dart';
 import 'package:Atlas/pages/search_page.dart';
 import 'package:Atlas/services/auth_service.dart';
+import 'package:Atlas/services/database_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
 
   final AuthService _authService = new AuthService();
-  final String userName;
-  final String userEmail;
+  FirebaseUser _user;
+  String _userName = '';
+  String _userEmail = '';
+  Stream _blogPosts;
 
-  HomePage({
-    this.userName,
-    this.userEmail
-  });
+  // initState
+  @override
+  void initState() {
+    super.initState();
+    _getBlogPosts();
+  }
+
+  _getBlogPosts() async {
+    _user = await FirebaseAuth.instance.currentUser();
+    await HelperFunctions.getUserNameSharedPreference().then((value) {
+      setState(() {
+        _userName = value;
+      });
+    });
+    await HelperFunctions.getUserEmailSharedPreference().then((value) {
+      setState(() {
+        _userEmail = value;
+      });
+    });
+    DatabaseService(uid: _user.uid).getUserBlogPosts().then((snapshots) {
+      setState(() {
+        _blogPosts = snapshots;
+      });
+    });
+  }
+
+
+  Widget noBlogPostWidget() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 25.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => BlogPage(uid: _user.uid, userName: _userName, userEmail: _userEmail)));
+            },
+            child: Icon(Icons.add_circle, color: Colors.grey[700], size: 100.0)
+          ),
+          SizedBox(height: 20.0),
+          Text("You have not created any blog posts, tap on the 'plus' icon present above or at the bottom-right to create your first blog post."),
+        ],
+      )
+    );
+  }
+
+  Widget groupsList() {
+    return StreamBuilder(
+      stream: _blogPosts,
+      builder: (context, snapshot) {
+        if(snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data.documents.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(snapshot.data.documents[index].data['blogPostTitle']),
+                subtitle: Text(snapshot.data.documents[index].data['blogPostContent']),
+              );
+            }
+          );
+        }
+        else {
+          return noBlogPostWidget();
+        }
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,26 +138,10 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 25.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => BlogPage(userName: userName, userEmail: userEmail,)));
-              },
-              child: Icon(Icons.add_circle, color: Colors.grey[700], size: 100.0)
-            ),
-            SizedBox(height: 20.0),
-            Text("You have not created any blog posts, tap on the 'plus' icon present above or at the bottom-right to create your first blog post."),
-          ],
-        )
-      ),
+      body: groupsList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => BlogPage(userName: userName, userEmail: userEmail)));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => BlogPage(uid: _user.uid, userName: _userName, userEmail: _userEmail)));
         },
         child: Icon(Icons.add, color: Colors.white, size: 30.0),
         backgroundColor: Colors.grey[700],

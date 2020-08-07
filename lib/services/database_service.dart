@@ -9,7 +9,6 @@ class DatabaseService {
 
   // Collection reference
   final CollectionReference userCollection = Firestore.instance.collection('users');
-  final CollectionReference blogPostCollection = Firestore.instance.collection('blogPosts');
 
   // update user data
   Future updateUserData(String fullName, String email, String password) async {
@@ -29,12 +28,19 @@ class DatabaseService {
 
   // save blog post
   Future saveBlogPost(String title, String author, String authorEmail, String content) async {
-    return await blogPostCollection.add({
+    return await Firestore.instance.collection('users').document(uid).collection('blogPosts').add({
+      'userId': uid,
       'blogPostTitle': title,
       'blogPostAuthor': author,
       'blogPostAuthorEmail': authorEmail,
       'blogPostContent': content,
-      'createdDate': new DateTime.now()
+      'createdAt': new DateTime.now()
     });
+  }
+
+  // get user blog posts
+  getUserBlogPosts() async {
+    // return await Firestore.instance.collection("users").where('email', isEqualTo: email).snapshots();
+    return Firestore.instance.collection('users').document(uid).collection('blogPosts').orderBy('createdAt').snapshots();
   }
 }
