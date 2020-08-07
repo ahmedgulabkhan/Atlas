@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class DatabaseService {
 
@@ -34,7 +35,8 @@ class DatabaseService {
       'blogPostAuthor': author,
       'blogPostAuthorEmail': authorEmail,
       'blogPostContent': content,
-      'createdAt': new DateTime.now()
+      'createdAt': new DateTime.now(),
+      'date': DateFormat.yMMMd('en_US').format(new DateTime.now())
     });
   }
 

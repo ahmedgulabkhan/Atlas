@@ -69,20 +69,26 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget groupsList() {
+  Widget blogPostsList() {
     return StreamBuilder(
       stream: _blogPosts,
       builder: (context, snapshot) {
         if(snapshot.hasData) {
-          return ListView.builder(
-            itemCount: snapshot.data.documents.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(snapshot.data.documents[index].data['blogPostTitle']),
-                subtitle: Text(snapshot.data.documents[index].data['blogPostContent']),
-              );
-            }
-          );
+          if(snapshot.data.documents != null && snapshot.data.documents.length != 0) {
+            return ListView.builder(
+              itemCount: snapshot.data.documents.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(snapshot.data.documents[index].data['blogPostTitle']),
+                  subtitle: Text(snapshot.data.documents[index].data['blogPostContent']),
+                  trailing: Text(snapshot.data.documents[index].data['date']),
+                );
+              }
+            );
+          }
+          else {
+            return noBlogPostWidget();
+          }
         }
         else {
           return noBlogPostWidget();
@@ -138,7 +144,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: groupsList(),
+      body: blogPostsList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => BlogPage(uid: _user.uid, userName: _userName, userEmail: _userEmail)));
