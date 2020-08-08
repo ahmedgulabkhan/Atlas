@@ -4,23 +4,23 @@ import 'package:Atlas/shared/constants.dart';
 import 'package:Atlas/shared/loading.dart';
 import 'package:flutter/material.dart';
 
-class BlogPage extends StatefulWidget {
+class CreateBlogPage extends StatefulWidget {
 
   final String uid;
   final String userName;
   final String userEmail;
 
-  BlogPage({
+  CreateBlogPage({
     this.uid,
     this.userName,
     this.userEmail
   });
 
   @override
-  _BlogPageState createState() => _BlogPageState();
+  _CreateBlogPageState createState() => _CreateBlogPageState();
 }
 
-class _BlogPageState extends State<BlogPage> {
+class _CreateBlogPageState extends State<CreateBlogPage> {
 
   TextEditingController _titleEditingController = new TextEditingController();
   TextEditingController _contentEditingController = new TextEditingController();

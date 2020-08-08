@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           GestureDetector(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => BlogPage(uid: _user.uid, userName: _userName, userEmail: _userEmail)));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CreateBlogPage(uid: _user.uid, userName: _userName, userEmail: _userEmail)));
             },
             child: Icon(Icons.add_circle, color: Colors.grey[700], size: 100.0)
           ),
@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> {
       body: blogPostsList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => BlogPage(uid: _user.uid, userName: _userName, userEmail: _userEmail)));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => CreateBlogPage(uid: _user.uid, userName: _userName, userEmail: _userEmail)));
         },
         child: Icon(Icons.add, color: Colors.white, size: 30.0),
         backgroundColor: Colors.grey[700],

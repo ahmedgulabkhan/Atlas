@@ -275,6 +275,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.3"
+  randomizer:
+    dependency: "direct main"
+    description:
+      name: randomizer
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   shared_preferences:
     dependency: "direct main"
     description:
