@@ -29,8 +29,9 @@ class DatabaseService {
 
   // save blog post
   Future saveBlogPost(String title, String author, String authorEmail, String content) async {
-    return await Firestore.instance.collection('users').document(uid).collection('blogPosts').add({
+    DocumentReference blogPostsRef = await Firestore.instance.collection('users').document(uid).collection('blogPosts').add({
       'userId': uid,
+      'blogPostId': '',
       'blogPostTitle': title,
       'blogPostAuthor': author,
       'blogPostAuthorEmail': authorEmail,
@@ -38,6 +39,12 @@ class DatabaseService {
       'createdAt': new DateTime.now(),
       'date': DateFormat.yMMMd('en_US').format(new DateTime.now())
     });
+
+    await blogPostsRef.updateData({
+        'blogPostId': blogPostsRef.documentID
+    });
+
+    return blogPostsRef.documentID;
   }
 
   // get user blog posts

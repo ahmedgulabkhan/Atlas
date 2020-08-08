@@ -1,7 +1,7 @@
 import 'package:Atlas/helper/helper_functions.dart';
 import 'package:Atlas/pages/about_page.dart';
 import 'package:Atlas/pages/authenticate_page.dart';
-import 'package:Atlas/pages/blog_page.dart';
+import 'package:Atlas/pages/create_blog_page.dart';
 import 'package:Atlas/pages/search_page.dart';
 import 'package:Atlas/services/auth_service.dart';
 import 'package:Atlas/services/database_service.dart';
@@ -85,6 +85,8 @@ class _HomePageState extends State<HomePage> {
                 //   trailing: Text(snapshot.data.documents[index].data['date']),
                 // );
                 return PostTile(
+                  userId: _user.uid,
+                  blogPostId: snapshot.data.documents[index].data['blogPostId'],
                   blogPostTitle: snapshot.data.documents[index].data['blogPostTitle'],
                   blogPostContent: snapshot.data.documents[index].data['blogPostContent'],
                   date: snapshot.data.documents[index].data['date']

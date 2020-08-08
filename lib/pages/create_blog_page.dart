@@ -1,4 +1,4 @@
-import 'package:Atlas/pages/success_page.dart';
+import 'package:Atlas/pages/blogpost_page.dart';
 import 'package:Atlas/services/database_service.dart';
 import 'package:Atlas/shared/constants.dart';
 import 'package:Atlas/shared/loading.dart';
@@ -35,7 +35,7 @@ class _CreateBlogPageState extends State<CreateBlogPage> {
       });
 
       await DatabaseService(uid: widget.uid).saveBlogPost(_titleEditingController.text, widget.userName, widget.userEmail, _contentEditingController.text).then((res) async {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SuccessPage()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BlogPostPage(userId: widget.uid, blogPostId: res)));
       });
     }
   }
