@@ -1,4 +1,5 @@
 import 'package:Atlas/services/database_service.dart';
+import 'package:Atlas/widgets/post_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -32,26 +33,47 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget blogPostsList() {
-    return _hasUserSearched ? ListView.builder(
+    return _hasUserSearched ? (searchResultSnapshot.documents.length == 0) ? 
+    Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+      child: Center(child: Text('No results found...')),
+    )
+    : 
+    ListView.builder(
       shrinkWrap: true,
       itemCount: searchResultSnapshot.documents.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(
-            searchResultSnapshot.documents[index].data["blogPostTitle"], style: TextStyle(fontWeight: FontWeight.bold),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-          ),
-          subtitle: Text(
-            searchResultSnapshot.documents[index].data["blogPostContent"], style: TextStyle(fontSize: 13.0),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 4,
-          ),
+        // return ListTile(
+        //   title: Text(
+        //     searchResultSnapshot.documents[index].data["blogPostTitle"], style: TextStyle(fontWeight: FontWeight.bold),
+        //     overflow: TextOverflow.ellipsis,
+        //     maxLines: 1,
+        //   ),
+        //   subtitle: Text(
+        //     searchResultSnapshot.documents[index].data["blogPostContent"], style: TextStyle(fontSize: 13.0),
+        //     overflow: TextOverflow.ellipsis,
+        //     maxLines: 4,
+        //   ),
+        // );
+        return Column(
+          children: <Widget>[
+            PostTile(
+              userId: searchResultSnapshot.documents[index].data["userId"],
+              blogPostId: searchResultSnapshot.documents[index].data['blogPostId'],
+              blogPostTitle: searchResultSnapshot.documents[index].data['blogPostTitle'],
+              blogPostContent: searchResultSnapshot.documents[index].data['blogPostContent'],
+              date: searchResultSnapshot.documents[index].data['date']
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Divider(height: 0.0)
+            ),
+          ],
         );
       }
     )
-    :
-    Container();
+  :
+  Container();
   }
 
    @override
@@ -103,7 +125,10 @@ class _SearchPageState extends State<SearchPage> {
                 ],
               ),
             ),
-            _isLoading ? Container(child: Center(child: CircularProgressIndicator())) : blogPostsList()
+            _isLoading ? Padding(
+              padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+              child: Center(child: CircularProgressIndicator()),
+            ) : blogPostsList()
           ],
         ),
       ),

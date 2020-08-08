@@ -46,33 +46,42 @@ class DatabaseService {
         'blogPostId': blogPostsRef_1.documentID
     });
 
-    DocumentReference blogPostsRef_2 = await Firestore.instance.collection('users').document(uid).collection('blogPosts').add({
-      'userId': uid,
-      'blogPostId': '',
-      'blogPostTitle': title,
-      'blogPostAuthor': author,
-      'blogPostAuthorEmail': authorEmail,
-      'blogPostContent': content,
-      'createdAt': new DateTime.now(),
-      'date': DateFormat.yMMMd('en_US').format(new DateTime.now())
-    });
+    // DocumentReference blogPostsRef_2 = await Firestore.instance.collection('users').document(uid).collection('blogPosts').add({
+    //   'userId': uid,
+    //   'blogPostId': '',
+    //   'blogPostTitle': title,
+    //   'blogPostAuthor': author,
+    //   'blogPostAuthorEmail': authorEmail,
+    //   'blogPostContent': content,
+    //   'createdAt': new DateTime.now(),
+    //   'date': DateFormat.yMMMd('en_US').format(new DateTime.now())
+    // });
 
-    await blogPostsRef_2.updateData({
-        'blogPostId': blogPostsRef_2.documentID
-    });
+    // await blogPostsRef_2.updateData({
+    //     'blogPostId': blogPostsRef_2.documentID
+    // });
 
-    return blogPostsRef_2.documentID;
+    return blogPostsRef_1.documentID;
   }
 
   // get user blog posts
   getUserBlogPosts() async {
     // return await Firestore.instance.collection("users").where('email', isEqualTo: email).snapshots();
-    return Firestore.instance.collection('users').document(uid).collection('blogPosts').orderBy('createdAt').snapshots();
+    // return Firestore.instance.collection('users').document(uid).collection('blogPosts').orderBy('createdAt').snapshots();
+    return Firestore.instance.collection('blogPosts').orderBy('createdAt').snapshots();
   }
 
   // get blog post details
   Future getBlogPostDetails(String blogPostId) async {
-    QuerySnapshot snapshot = await Firestore.instance.collection('users').document(uid).collection('blogPosts').where('blogPostId', isEqualTo: blogPostId).getDocuments();
+    // QuerySnapshot snapshot = await Firestore.instance.collection('users').document(uid).collection('blogPosts').where('blogPostId', isEqualTo: blogPostId).getDocuments();
+    // BlogPostDetails blogPostDetails = new BlogPostDetails(
+    //   blogPostTitle: snapshot.documents[0].data['blogPostTitle'],
+    //   blogPostAuthor: snapshot.documents[0].data['blogPostAuthor'],
+    //   blogPostAuthorEmail: snapshot.documents[0].data['blogPostAuthorEmail'],
+    //   blogPostContent: snapshot.documents[0].data['blogPostContent'],
+    //   date: snapshot.documents[0].data['date'],
+    // );
+    QuerySnapshot snapshot = await Firestore.instance.collection('blogPosts').where('blogPostId', isEqualTo: blogPostId).getDocuments();
     BlogPostDetails blogPostDetails = new BlogPostDetails(
       blogPostTitle: snapshot.documents[0].data['blogPostTitle'],
       blogPostAuthor: snapshot.documents[0].data['blogPostAuthor'],

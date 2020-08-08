@@ -84,12 +84,20 @@ class _HomePageState extends State<HomePage> {
                 //   subtitle: Text(snapshot.data.documents[index].data['blogPostContent']),
                 //   trailing: Text(snapshot.data.documents[index].data['date']),
                 // );
-                return PostTile(
-                  userId: _user.uid,
-                  blogPostId: snapshot.data.documents[index].data['blogPostId'],
-                  blogPostTitle: snapshot.data.documents[index].data['blogPostTitle'],
-                  blogPostContent: snapshot.data.documents[index].data['blogPostContent'],
-                  date: snapshot.data.documents[index].data['date']
+                return Column(
+                  children: <Widget>[
+                    PostTile(
+                      userId: _user.uid,
+                      blogPostId: snapshot.data.documents[index].data['blogPostId'],
+                      blogPostTitle: snapshot.data.documents[index].data['blogPostTitle'],
+                      blogPostContent: snapshot.data.documents[index].data['blogPostContent'],
+                      date: snapshot.data.documents[index].data['date']
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Divider(height: 0.0)
+                    ),
+                  ],
                 );
               }
             );

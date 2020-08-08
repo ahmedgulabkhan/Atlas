@@ -34,7 +34,7 @@ class _PostTileState extends State<PostTile> {
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => BlogPostPage(userId: widget.userId, blogPostId: widget.blogPostId)));
       },
-          child: Container(
+      child: Container(
         padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
         child: ListTile(
           leading: CircleAvatar(
