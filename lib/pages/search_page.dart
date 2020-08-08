@@ -1,16 +1,112 @@
+import 'package:Atlas/services/database_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
- class SearchPage extends StatelessWidget {
+ class SearchPage extends StatefulWidget {
+
+  @override
+  _SearchPageState createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+   
+  TextEditingController searchEditingController = new TextEditingController();
+  QuerySnapshot searchResultSnapshot;
+  bool _isLoading = false;
+  bool _hasUserSearched = false;
+
+  _initiateSearch() async {
+    if(searchEditingController.text.isNotEmpty){
+      setState(() {
+        _isLoading = true;
+      });
+      await DatabaseService().searchBlogPostsByName(searchEditingController.text).then((snapshot) {
+        searchResultSnapshot = snapshot;
+        // print(searchResultSnapshot.documents.length);
+        setState(() {
+          _isLoading = false;
+          _hasUserSearched = true;
+        });
+      });
+    }
+  }
+
+  Widget blogPostsList() {
+    return _hasUserSearched ? ListView.builder(
+      shrinkWrap: true,
+      itemCount: searchResultSnapshot.documents.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(
+            searchResultSnapshot.documents[index].data["blogPostTitle"], style: TextStyle(fontWeight: FontWeight.bold),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
+          subtitle: Text(
+            searchResultSnapshot.documents[index].data["blogPostContent"], style: TextStyle(fontSize: 13.0),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 4,
+          ),
+        );
+      }
+    )
+    :
+    Container();
+  }
+
    @override
    Widget build(BuildContext context) {
      return Scaffold(
       appBar: AppBar(
-        title: Text("Search"),
         elevation: 0.0,
+        backgroundColor: Theme.of(context).primaryColor,
+        title: Text('Search'),
       ),
-      body: Center(
-        child: Text("This is the search page"),
+      body: Container(
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+              color: Colors.black87,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: searchEditingController,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: "Search blog posts...",
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
+                        border: InputBorder.none
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: (){
+                      _initiateSearch();
+                    },
+                    child: Container(
+                      height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent,
+                          borderRadius: BorderRadius.circular(40)
+                        ),
+                        child: Icon(Icons.search, color: Colors.white)
+                    )
+                  )
+                ],
+              ),
+            ),
+            _isLoading ? Container(child: Center(child: CircularProgressIndicator())) : blogPostsList()
+          ],
+        ),
       ),
     );
    }
- }
+}

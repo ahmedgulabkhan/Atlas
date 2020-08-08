@@ -30,7 +30,23 @@ class DatabaseService {
 
   // save blog post
   Future saveBlogPost(String title, String author, String authorEmail, String content) async {
-    DocumentReference blogPostsRef = await Firestore.instance.collection('users').document(uid).collection('blogPosts').add({
+    DocumentReference blogPostsRef_1 = await Firestore.instance.collection('blogPosts').add({
+      'userId': uid,
+      'blogPostId': '',
+      'blogPostTitle': title,
+      'blogPostTitleArray': title.toLowerCase().split(" "),
+      'blogPostAuthor': author,
+      'blogPostAuthorEmail': authorEmail,
+      'blogPostContent': content,
+      'createdAt': new DateTime.now(),
+      'date': DateFormat.yMMMd('en_US').format(new DateTime.now())
+    });
+
+    await blogPostsRef_1.updateData({
+        'blogPostId': blogPostsRef_1.documentID
+    });
+
+    DocumentReference blogPostsRef_2 = await Firestore.instance.collection('users').document(uid).collection('blogPosts').add({
       'userId': uid,
       'blogPostId': '',
       'blogPostTitle': title,
@@ -41,11 +57,11 @@ class DatabaseService {
       'date': DateFormat.yMMMd('en_US').format(new DateTime.now())
     });
 
-    await blogPostsRef.updateData({
-        'blogPostId': blogPostsRef.documentID
+    await blogPostsRef_2.updateData({
+        'blogPostId': blogPostsRef_2.documentID
     });
 
-    return blogPostsRef.documentID;
+    return blogPostsRef_2.documentID;
   }
 
   // get user blog posts
@@ -66,5 +82,14 @@ class DatabaseService {
     );
 
     return blogPostDetails;
+  }
+
+  // search blogposts
+  searchBlogPostsByName(String blogPostName) async {
+    List<String> searchList = blogPostName.toLowerCase().split(" ");
+    QuerySnapshot snapshot = await  Firestore.instance.collection('blogPosts').where('blogPostTitleArray', arrayContainsAny: searchList).getDocuments();
+    // print(snapshot.documents.length);
+
+    return snapshot;
   }
 }

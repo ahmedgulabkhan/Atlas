@@ -43,12 +43,14 @@ class _PostTileState extends State<PostTile> {
             child: Text(widget.blogPostTitle.substring(0, 1).toUpperCase(), textAlign: TextAlign.center, style: TextStyle(color: Colors.white)),
           ),
           title: Text(
-            widget.blogPostTitle, style: TextStyle(fontWeight: FontWeight.bold),
+            widget.blogPostTitle,
+            style: TextStyle(fontWeight: FontWeight.bold),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
           subtitle: Text(
-            widget.blogPostContent, style: TextStyle(fontSize: 13.0),
+            widget.blogPostContent,
+            style: TextStyle(fontSize: 13.0),
             overflow: TextOverflow.ellipsis,
             maxLines: 4,
           ),
