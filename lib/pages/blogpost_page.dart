@@ -45,7 +45,33 @@ class _BlogPostPageState extends State<BlogPostPage> {
         title: Text(blogPostDetails.blogPostTitle),
       ),
       body: Center(
-        child: Text(blogPostDetails.blogPostContent),
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),
+          children: <Widget>[
+            Text(blogPostDetails.blogPostTitle, style: TextStyle(fontSize: 40.0, color: Colors.black, fontWeight: FontWeight.bold)),
+
+            SizedBox(height: 20.0),
+
+            Text('Author - ${blogPostDetails.blogPostAuthor}', style: TextStyle(fontSize: 14.0, fontStyle: FontStyle.italic)),
+
+            SizedBox(height: 5.0),
+
+            Text('Email - ${blogPostDetails.blogPostAuthorEmail}', style: TextStyle(fontSize: 14.0, fontStyle: FontStyle.italic)),
+
+            SizedBox(height: 5.0),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Text('Published on - ${blogPostDetails.date}', style: TextStyle(fontSize: 14.0, color: Colors.grey)),
+              ],
+            ),
+
+            SizedBox(height: 40.0),
+
+            Text(blogPostDetails.blogPostContent, style: TextStyle(fontSize: 16.0)),
+          ],
+        )
       ),
     );
   }
