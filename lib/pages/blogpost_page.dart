@@ -29,7 +29,7 @@ class _BlogPostPageState extends State<BlogPostPage> {
   }
 
   _getBlogPostDetails() async {
-    await DatabaseService(uid: widget.userId).getBlogPostDetails().then((res) {
+    await DatabaseService(uid: widget.userId).getBlogPostDetails(widget.blogPostId).then((res) {
       setState(() {
         blogPostDetails = res;
         _isLoading = false;
@@ -42,10 +42,10 @@ class _BlogPostPageState extends State<BlogPostPage> {
     return _isLoading ? Loading() : Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        title: Text(widget.blogPostId),
+        title: Text(blogPostDetails.blogPostTitle),
       ),
       body: Center(
-        child: Text('This is the post content'),
+        child: Text(blogPostDetails.blogPostContent),
       ),
     );
   }

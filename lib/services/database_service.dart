@@ -1,3 +1,4 @@
+import 'package:Atlas/models/BlogPostDetails.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
@@ -51,5 +52,19 @@ class DatabaseService {
   getUserBlogPosts() async {
     // return await Firestore.instance.collection("users").where('email', isEqualTo: email).snapshots();
     return Firestore.instance.collection('users').document(uid).collection('blogPosts').orderBy('createdAt').snapshots();
+  }
+
+  // get blog post details
+  Future getBlogPostDetails(String blogPostId) async {
+    QuerySnapshot snapshot = await Firestore.instance.collection('users').document(uid).collection('blogPosts').where('blogPostId', isEqualTo: blogPostId).getDocuments();
+    BlogPostDetails blogPostDetails = new BlogPostDetails(
+      blogPostTitle: snapshot.documents[0].data['blogPostTitle'],
+      blogPostAuthor: snapshot.documents[0].data['blogPostAuthor'],
+      blogPostAuthorEmail: snapshot.documents[0].data['blogPostAuthorEmail'],
+      blogPostContent: snapshot.documents[0].data['blogPostContent'],
+      date: snapshot.documents[0].data['date'],
+    );
+
+    return blogPostDetails;
   }
 }

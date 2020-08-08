@@ -32,7 +32,7 @@ class _PostTileState extends State<PostTile> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => BlogPostPage(userId: userId, blogPostId: widget.blogPostId)));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => BlogPostPage(userId: widget.userId, blogPostId: widget.blogPostId)));
       },
           child: Container(
         padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
