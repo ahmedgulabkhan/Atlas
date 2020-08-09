@@ -4,12 +4,13 @@ Atlas is a Blogging app made using Flutter and Firebase. Users can register on t
 
 ## Snapshots of the application
 
-<img src="./snapshots/Snapshot1.jpeg" width="31%" />
-<img src="./snapshots/Snapshot2.jpeg" width="31%" />
-<img src="./snapshots/Snapshot3.jpeg" width="31%" />
-<img src="./snapshots/Snapshot4.jpeg" width="31%" />
-<img src="./snapshots/Snapshot5.jpeg" width="31%" />
-<img src="./snapshots/Snapshot6.jpeg" width="31%" />
+<img src="./snapshots/Snapshot1.jpeg" width="30%" align="left">
+<img src="./snapshots/Snapshot2.jpeg" width="30%" align="left">
+<img src="./snapshots/Snapshot3.jpeg" width="30%">
+<br />
+<img src="./snapshots/Snapshot4.jpeg" width="30%" align="left">
+<img src="./snapshots/Snapshot5.jpeg" width="30%" align="left">
+<img src="./snapshots/Snapshot6.jpeg" width="30%" >
 
 ## Configuration Steps
 1. Cloning the repository:
