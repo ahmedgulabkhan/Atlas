@@ -1,6 +1,7 @@
 import 'package:Atlas/models/BlogPostDetails.dart';
 import 'package:Atlas/services/database_service.dart';
 import 'package:Atlas/shared/loading.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class BlogPostPage extends StatefulWidget {
@@ -21,6 +22,9 @@ class _BlogPostPageState extends State<BlogPostPage> {
 
   BlogPostDetails blogPostDetails = new BlogPostDetails();
   bool _isLoading = true;
+  bool _isLiked;
+  DocumentReference blogPostRef;
+  DocumentSnapshot blogPostSnap;
 
   @override
   void initState() {
@@ -35,6 +39,23 @@ class _BlogPostPageState extends State<BlogPostPage> {
         _isLoading = false;
       });
     });
+
+    blogPostRef = Firestore.instance.collection('blogPosts').document(widget.blogPostId);
+    blogPostSnap = await blogPostRef.get();
+
+    List<dynamic> likedBy = blogPostSnap.data['likedBy'];
+    if(likedBy.contains(widget.userId)) {
+      setState(() {
+        _isLiked = true;
+      });
+    }
+    else {
+      setState(() {
+        _isLiked = false;
+      });
+    }
+
+    print(blogPostSnap.data);
   }
 
   @override
@@ -65,8 +86,12 @@ class _BlogPostPageState extends State<BlogPostPage> {
               children: <Widget>[
                 Text('Published on - ${blogPostDetails.date}', style: TextStyle(fontSize: 14.0, color: Colors.grey)),
                 GestureDetector(
-                  onTap: () {
-
+                  onTap: () async {
+                    await DatabaseService(uid: widget.userId).togglingLikes(widget.blogPostId);
+                    blogPostSnap = await blogPostRef.get();
+                    setState(() {
+                      _isLiked = !_isLiked;
+                    });
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7.0),
@@ -77,9 +102,10 @@ class _BlogPostPageState extends State<BlogPostPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Icon(Icons.thumb_up, size: 17.0),
+                        _isLiked != null ? (_isLiked ? Icon(Icons.thumb_up, size: 17.0, color: Colors.blueAccent) : Icon(Icons.thumb_up, size: 17.0)) : Text(''),
+                        // Icon(Icons.thumb_up, size: 17.0),
                         SizedBox(width: 7.0),
-                        Text('32 Likes', style: TextStyle(fontSize: 13.0))
+                        blogPostSnap != null ? Text('${blogPostSnap.data['likedBy'].length} Like(s)', style: TextStyle(fontSize: 13.0)) : Text(''),
                       ],
                     ),
                   ),
