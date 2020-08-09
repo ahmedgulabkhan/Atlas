@@ -72,7 +72,7 @@ class DatabaseService {
   getUserBlogPosts() async {
     // return await Firestore.instance.collection("users").where('email', isEqualTo: email).snapshots();
     // return Firestore.instance.collection('users').document(uid).collection('blogPosts').orderBy('createdAt').snapshots();
-    return Firestore.instance.collection('blogPosts').orderBy('createdAt').snapshots();
+    return Firestore.instance.collection('blogPosts').where('userId', isEqualTo: uid).orderBy('createdAt', descending: true).snapshots();
   }
 
   // get blog post details

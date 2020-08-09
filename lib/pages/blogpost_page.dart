@@ -77,9 +77,9 @@ class _BlogPostPageState extends State<BlogPostPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Icon(Icons.thumb_up),
+                        Icon(Icons.thumb_up, size: 17.0),
                         SizedBox(width: 7.0),
-                        Text('32 Likes')
+                        Text('32 Likes', style: TextStyle(fontSize: 13.0))
                       ],
                     ),
                   ),
