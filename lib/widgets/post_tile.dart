@@ -30,7 +30,7 @@ class _PostTileState extends State<PostTile> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => BlogPostPage(userId: widget.userId, blogPostId: widget.blogPostId)));
       },
@@ -44,7 +44,7 @@ class _PostTileState extends State<PostTile> {
           ),
           title: Text(
             widget.blogPostTitle,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
@@ -54,7 +54,7 @@ class _PostTileState extends State<PostTile> {
             overflow: TextOverflow.ellipsis,
             maxLines: 4,
           ),
-          trailing: Text(widget.date, style: TextStyle(color: Colors.grey)),
+          trailing: Text(widget.date, style: TextStyle(color: Colors.grey, fontSize: 12.0)),
         ),
       ),
     );

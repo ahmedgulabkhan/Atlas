@@ -16,6 +16,7 @@ class DatabaseService {
   Future updateUserData(String fullName, String email, String password) async {
     return await userCollection.document(uid).setData({
       'fullName': fullName,
+      'fullNameArray': fullName.toLowerCase().split(" "),
       'email': email,
       'password': password,
     });
@@ -98,6 +99,16 @@ class DatabaseService {
     List<String> searchList = blogPostName.toLowerCase().split(" ");
     QuerySnapshot snapshot = await  Firestore.instance.collection('blogPosts').where('blogPostTitleArray', arrayContainsAny: searchList).getDocuments();
     // print(snapshot.documents.length);
+
+    return snapshot;
+  }
+
+
+  // search users by name
+  searchUsersByName(String userName) async {
+    List<String> searchList = userName.toLowerCase().split(" ");
+    QuerySnapshot snapshot = await  Firestore.instance.collection('users').where('fullNameArray', arrayContainsAny: searchList).getDocuments();
+    print(snapshot.documents.length);
 
     return snapshot;
   }

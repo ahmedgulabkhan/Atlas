@@ -61,9 +61,29 @@ class _BlogPostPageState extends State<BlogPostPage> {
             SizedBox(height: 5.0),
 
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text('Published on - ${blogPostDetails.date}', style: TextStyle(fontSize: 14.0, color: Colors.grey)),
+                GestureDetector(
+                  onTap: () {
+
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7.0),
+                    decoration: BoxDecoration(
+                      color: Colors.black12,
+                      borderRadius:  BorderRadius.circular(20.0),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(Icons.thumb_up),
+                        SizedBox(width: 7.0),
+                        Text('32 Likes')
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
 
