@@ -15,10 +15,12 @@ class DatabaseService {
   // update user data
   Future updateUserData(String fullName, String email, String password) async {
     return await userCollection.document(uid).setData({
+      'userId': uid,
       'fullName': fullName,
       'fullNameArray': fullName.toLowerCase().split(" "),
       'email': email,
       'password': password,
+      'likedPosts': []
     });
   }
 
@@ -39,6 +41,7 @@ class DatabaseService {
       'blogPostAuthor': author,
       'blogPostAuthorEmail': authorEmail,
       'blogPostContent': content,
+      'likedBy': [],
       'createdAt': new DateTime.now(),
       'date': DateFormat.yMMMd('en_US').format(new DateTime.now())
     });

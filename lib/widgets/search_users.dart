@@ -1,3 +1,4 @@
+import 'package:Atlas/pages/user_details_page.dart';
 import 'package:Atlas/services/database_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +52,7 @@ class _SearchUsersState extends State<SearchUsers> {
           children: <Widget>[
             InkWell(
               onTap: () {
-                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserDetailsPage()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserDetailsPage(userId: searchResultSnapshot.documents[index].data['userId'], fullName: searchResultSnapshot.documents[index].data['fullName'], email: searchResultSnapshot.documents[index].data['email'],)));
               },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
@@ -70,7 +71,10 @@ class _SearchUsersState extends State<SearchUsers> {
                 ),
               ),
             ),
-            Divider(height: 0.0)
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Divider(height: 0.0)
+            ),
           ],
         );
       }
